@@ -38,7 +38,7 @@ async function manejarNav(detalles)
         const keyPermiso = `${detalles.tabId}:${urlTarget}`;
         if (navPermitidas.has(keyPermiso)) 
         {
-            navPermitidas.delete(keyPermiso);
+            setTimeout(() => { navPermitidas.delete(keyPermiso); }, 1000);
             return;
         }
         const res = Detector.debeInterceptar(urlSource, urlTarget, config);
@@ -58,10 +58,5 @@ chrome.webNavigation.onHistoryStateUpdated.addListener(manejarNav);
 chrome.runtime.onMessage.addListener((peticion, remitente, enviarResponse) => 
 {
     if (peticion.res === "permitir")
-    {
-        const keyPermiso = `${peticion.tabId}:${peticion.urlTarget}`;
-        navPermitidas.add(keyPermiso);
-        enviarResponse({exito: true});
-    }
+        navPermitidas.add(`${peticion.tabId}:${peticion.urlTarget}`);
 });
-// FODSOFT(TM). Neo Fodere de Frutos. All rights reserved.
