@@ -7,8 +7,8 @@ ClickControl™ is a lightweight protection web extension against unwanted redir
 It blocks forced tab openings, hidden click zones, malicious redirects, and other actions that try to move you away from the page without your consent. Lightweight, privacy‑friendly, and fully local, ClickControl™ ensures that every navigation is intentional and under your control.
 
 ## 📸 Screenshots
-<img src="https://resources.fodsoft.com/images/ext/clickcontrol_screenshot_01.png" width="512" height="auto">
-<img src="https://resources.fodsoft.com/images/ext/clickcontrol_screenshot_02.png" width="512" height="auto">
+<img src="https://resources.fodsoft.com/images/ext/clickcontrol_screenshot_01.png" width="456" height="auto">
+<img src="https://resources.fodsoft.com/images/ext/clickcontrol_screenshot_02.png" width="456" height="auto">
 
 <hr>
 
