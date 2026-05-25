@@ -1,0 +1,17 @@
+{
+  "descripcion": { "message": "Protection contre le clickjacking, les redirections malveillantes et les comportements web dangereux." },
+  "activar_proteccion": { "message": "Activer la protection" },
+  "proteccion_max": { "message": "Protection maximale" },
+  "desc_proteccion_max": { "message": "Bloque silencieusement les redirections et les éléments web cachés supplémentaires. (Certains sites peuvent ne pas fonctionner correctement)." },
+  "todos_sitios": { "message": "Tous les sites" },
+  "desc_todos_sitios": { "message": "Applique la protection sur tous les sites, en ignorant la liste personnalisée." },
+  "lista_custom": { "message": "Liste de sites personnalisée :" },
+  "desc_lista_custom": { "message": "Ajoute des sites où la protection sera activée (Ignoré si l’option \"Tous les sites\" est active)." },
+  "sitio_placeholder": { "message": "exemple.com" },
+  "btn_agregar": { "message": "Ajouter" },
+  "msg_espera": { "message": "Attends !" },
+  "msg_destino": { "message": "Essayes‑tu d’aller vers :" },
+  "cargando": { "message": "Chargement..." },
+  "btn_denegar": { "message": "Non, revenir" },
+  "btn_permitir": { "message": "Oui, continuer" }
+}

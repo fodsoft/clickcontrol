@@ -1,0 +1,82 @@
+<!-- ui/menu.html - ClickControl(TM) v1.0 -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="menu.css">
+		<title>ClickControl&trade;</title>
+	</head>
+
+	<body>
+		<div class="header">
+			<img src="../img/logo_clickcontrol_a.webp" 
+				 alt="ClickControl logo"
+				 class="logo-clickcontrol"
+				 draggable="false"
+				 onerror="this.style.display='none'">
+		</div>
+
+		<div class="seccion">
+			<div class="opcion">
+				<span data-lang="activar_proteccion"></span>
+				<label class="toggle">
+					<input type="checkbox" id="toggle-activar">
+					<span class="slider round"></span>
+				</label>
+			</div>
+
+			<div class="opcion">
+				<div>
+					<span data-lang="proteccion_max"></span>
+					<small data-lang="desc_proteccion_max"></small>
+				</div>
+				<label class="toggle">
+					<input type="checkbox" id="toggle-protect-max">
+					<span class="slider round"></span>
+				</label>
+			</div>
+		</div>
+
+		<div class="seccion" id="domain-section">
+			<div class="opcion">
+				<div>
+					<span data-lang="todos_sitios"></span>
+					<small data-lang="desc_todos_sitios"></small>
+				</div>
+				<label class="toggle">
+					<input type="checkbox" id="toggle-todos-sitios">
+					<span class="slider round"></span>
+				</label>
+			</div>
+
+			<div class="opcion" style="align-items: start;">
+				<div>
+					<span data-lang="lista_custom"></span>
+					<small data-lang="desc_lista_custom"></small>
+				</div>
+			</div>
+
+			<div class="input-sitio">
+				<input type="text" id="input-sitio" data-lang-placeholder="sitio_placeholder">
+				<button id="btn-agregar" data-lang="btn_agregar"></button>
+			</div>
+
+			<ul id="lista-sitios"></ul>
+		</div>
+
+		<div class="footer">
+			<a href="https://fodsoft.com" target="_blank" rel="noopener noreferrer">
+				<img src="../img/logo_fodsoft.webp" 
+					 alt="FODSOFT logo" 
+					 class="logo-fodsoft" 
+					 draggable="false"
+					 onerror="this.style.display='none'">
+			</a>
+			<p>&copy; 2026 FODSOFT&trade;. Néo Foderé de Frutos. All rights reserved.</p>
+		</div>
+
+		<script type="module" src="menu.js"></script>
+	</body>
+</html>
+<!-- FODSOFT(TM). Neo Fodere de Frutos. All rights reserved. -->
