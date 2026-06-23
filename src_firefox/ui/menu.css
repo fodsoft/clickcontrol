@@ -1,6 +1,7 @@
-/* ui/menu.css - ClickControl(TM) v1.0 */
+/* SPDX-FileCopyrightText: 2025-2026 FODSOFT. Neo Fodere de Frutos */
+/* SPDX-License-Identifier: LicenseRef-FODL-1.0 */
 
-@font-face 
+@font-face
 {
     font-family: 'Montserrat';
     src: url('../fonts/montserrat.woff2') format('woff2');
@@ -9,43 +10,65 @@
     font-display: swap;
 }
 
+* { box-sizing: border-box; }
+
 body 
 {
     font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
     width: 330px;
     margin: 0;
-    background-color: #f4f7f6;
+    padding: 20px;
     color: #2c3e50;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    background: 
+        radial-gradient(circle at bottom right, 
+        rgba(44, 62, 80, 0.06), transparent 60%),
+        #f4f7f6;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .header 
 {
     margin-bottom: 20px;
-}
-
-.logo-clickcontrol 
-{
-    width: 220px;
-    object-fit: contain;
-    filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.1));
-}
-
-.seccion
-{
-    background: white;
     width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.logo 
+{
+    max-width: 220px;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0px 4px 8px rgba(44, 62, 80, 0.1));
+}
+
+.sec-panel 
+{
+    background: linear-gradient(
+        135deg, rgba(255, 255, 255, 0.45) 0%, 
+        rgba(255, 255, 255, 0.15) 100%
+    );
+    backdrop-filter: blur(25px) saturate(150%);
+    -webkit-backdrop-filter: blur(25px) saturate(150%);
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
+    border-left: 1px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 14px;
     padding: 16px;
     margin-bottom: 16px;
-    box-sizing: border-box;
+    width: 100%;
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.8),
+        0 8px 32px rgba(44, 62, 80, 0.1);
 }
 
-.opcion
+.option 
 {
     display: flex;
     justify-content: space-between;
@@ -54,17 +77,17 @@ body
     font-weight: 600;
 }
 
-.opcion small 
+.option small 
 {
     display: block;
     font-size: 0.75em;
     max-width: 220px;
-    color: #7f8c8d;
+    color: #5d6d7e;
     font-weight: normal;
     margin-top: 2px;
 }
 
-.toggle 
+.switch 
 {
     position: relative;
     display: inline-block;
@@ -73,11 +96,11 @@ body
     flex-shrink: 0;
 }
 
-.toggle input 
-{
-    opacity: 0;
-    width: 0;
-    height: 0;
+.switch input 
+{ 
+    opacity: 0; 
+    width: 0; 
+    height: 0; 
 }
 
 .slider 
@@ -85,129 +108,204 @@ body
     position: absolute;
     cursor: pointer;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-color: #dcdde1;
-    transition: .3s ease;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(10px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 
+        inset 0 2px 5px rgba(0, 0, 0, 0.08), 
+        0 2px 4px rgba(255, 255, 255, 0.5);
+    transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 24px;
 }
-
-.slider:before
+.slider:before 
 {
     position: absolute;
     content: "";
-    height: 18px;
-    width: 18px;
+    height: 16px;
+    width: 16px;
     left: 3px;
     bottom: 3px;
-    background-color: white;
-    transition: .3s ease;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    background: #ffffff;
+    transition: .3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(44, 62, 80, 0.25);
 }
 
 input:checked + .slider 
 {
-    background-color: #2ecc71;
+    background: linear-gradient(
+        135deg, rgba(46, 204, 113, 0.6) 0%,
+        rgba(46, 204, 113, 0.3) 100%
+    );
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 
+        inset 0 1px 3px rgba(255, 255, 255, 0.5), 
+        0 4px 12px rgba(46, 204, 113, 0.25);
 }
-
 input:checked + .slider:before 
 {
     transform: translateX(20px);
 }
 
-.slider.round
-{
-    border-radius: 24px;
-}
-
-.slider.round:before 
-{
-    border-radius: 50%;
-}
-
-.input-sitio
+.input-group 
 {
     display: flex;
     gap: 10px;
     margin-top: 10px;
     margin-bottom: 15px;
+    width: 100%;
+    align-items: center;
 }
 
-.input-sitio input 
+.input-group input 
 {
     flex: 1;
+    min-width: 0;
     padding: 10px 12px;
-    border: 1px solid #dcdde1;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
+    border-left: 1px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-right: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 8px;
     outline: none;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     font-family: inherit;
+    color: #2c3e50;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.03);
 }
-
-.input-sitio input:focus 
+.input-group input:focus 
 {
+    background: rgba(255, 255, 255, 0.6);
     border-color: #2ecc71;
-    box-shadow: 0 0 0 3px rgba(46, 204, 113, 0.2);
+    box-shadow:
+        0 0 0 3px rgba(46, 204, 113, 0.15), 
+        inset 0 1px 2px rgba(255,255,255,0.8);
 }
 
-.input-sitio button 
+.input-group button 
 {
-    background: #2ecc71;
-    color: white;
-    border: none;
-    padding: 0 16px;
+    flex-shrink: 0;
+    background: linear-gradient(
+        135deg, rgba(46, 204, 113, 0.6) 0%, 
+        rgba(46, 204, 113, 0.3) 100%
+    );
+    backdrop-filter: blur(12px) saturate(150%);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(39, 174, 96, 0.3);
+    border-right: 1px solid rgba(39, 174, 96, 0.3);
+    color: #145a32;
+    padding: 10px 16px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    transition: background 0.3s, transform 0.1s;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5), 
+        0 4px 12px rgba(46, 204, 113, 0.2);
+}
+.input-group button:hover 
+{
+    background: linear-gradient(
+        135deg, rgba(39, 174, 96, 0.7) 0%, 
+        rgba(39, 174, 96, 0.4) 100%
+    );
+    color: #0d3d21;
+}
+.input-group button:active 
+{ 
+    transform: scale(0.96); 
 }
 
-.input-sitio button:hover
+#btn-add-current 
 {
-    background: #27ae60;
+    width: 100%;
+    margin-bottom: 15px;
+    background: linear-gradient(
+        135deg, rgba(26, 188, 156, 0.6) 0%, 
+        rgba(26, 188, 156, 0.3) 100%
+    );
+    backdrop-filter: blur(12px) saturate(150%);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    border-left: 1px solid rgba(255, 255, 255, 0.6);
+    border-bottom: 1px solid rgba(22, 160, 133, 0.3);
+    border-right: 1px solid rgba(22, 160, 133, 0.3);
+    color: #0e6251;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    box-shadow: 
+        inset 0 1px 2px rgba(255, 255, 255, 0.5), 
+        0 4px 12px rgba(26, 188, 156, 0.2);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block; 
 }
-.input-sitio button:enable 
+#btn-add-current:hover 
 {
-    transform: scale(0.95);
+    background: linear-gradient(
+        135deg, rgba(22, 160, 133, 0.7) 0%, 
+        rgba(22, 160, 133, 0.4) 100%
+    );
+    color: #094035;
+}
+#btn-add-current:active 
+{ 
+    transform: scale(0.96); 
 }
 
-#lista-sitios
+#site-list 
 {
     list-style: none;
     padding: 0;
     margin: 0;
     max-height: 160px;
     overflow-y: auto;
+    width: 100%;
 }
 
-#lista-sitios li 
+#site-list li 
 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 10px 12px;
-    background: #f8f9fa;
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.8);
+    border-left: 1px solid rgba(255, 255, 255, 0.8);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
     margin-bottom: 8px;
     border-radius: 8px;
     font-size: 0.9em;
-    font-weight: 500;
-    border-left: 4px solid #2ecc71;
-    transition: background 0.2s;
-}
-#lista-sitios li:hover 
-{
-    background: #f1f2f6;
+    font-weight: 600;
+    border-left: 4px solid rgba(46, 204, 113, 0.8);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    word-break: break-all;
 }
 
-.btn-quitar
+.btn-del 
 {
     cursor: pointer;
     color: #e74c3c;
     font-size: 1.1em;
     opacity: 0.6;
-    transition: all 0.3s;
+    transition: all 0.2s;
+    flex-shrink: 0;
+    margin-left: 12px; 
 }
-.btn-quitar:hover 
+.btn-del:hover 
 {
     opacity: 1;
-    transform: scale(1.1);
+    transform: scale(1.15);
 }
 
 .footer 
@@ -218,11 +316,14 @@ input:checked + .slider:before
     flex-direction: column;
     align-items: center;
     text-align: center;
+    width: 100%;
 }
 
-.logo-fodsoft 
+.logo-fodsoft
 {
-    width: 200px;
+    max-width: 200px;
+    width: 100%;
+    height: auto;
     opacity: 0.4;
     transition: opacity 0.3s;
     filter: grayscale(100%);
@@ -234,8 +335,8 @@ input:checked + .slider:before
 }
 
 .footer p 
-{
-    margin-top: 19px;
-    font-size: 9px;
+{ 
+    margin-top: 19px; 
+    font-size: 8px; 
+    color: #7f8c8d; 
 }
-/* FODSOFT(TM). Neo Fodere de Frutos. All rights reserved. */

@@ -1,17 +1,21 @@
 {
-  "descripcion": { "message": "Protección contra clickjacking, redirecciones maliciosas y comportamientos web inseguros." },
-  "activar_proteccion": { "message": "Activar protección" },
-  "proteccion_max": { "message": "Protección máxima" },
-  "desc_proteccion_max": { "message": "Bloquea silenciosamente redirecciones y elementos web ocultos extra. (Algunos sitios pueden no funcionar correctamente)." },
-  "todos_sitios": { "message": "Todos los sitios" },
-  "desc_todos_sitios": { "message": "Aplica la protección en todos los sitios, ignorando la lista personalizada." },
-  "lista_custom": { "message": "Lista de sitios personalizada:" },
-  "desc_lista_custom": { "message": "Añade sitios donde la protección estará activada (Ignorado si la opción \"Todos los sitios\" está activa)." },
-  "sitio_placeholder": { "message": "ejemplo.com" },
-  "btn_agregar": { "message": "Añadir" },
-  "msg_espera": { "message": "¡Espera!" },
-  "msg_destino": { "message": "Estás intentando ir a:" },
-  "cargando": { "message": "Cargando..." },
-  "btn_denegar": { "message": "No, volver atrás" },
-  "btn_permitir": { "message": "Sí, continuar" }
+  "desc": { "message": "Protección contra clickjacking, redirecciones maliciosas y comportamientos web inseguros." },
+
+  "option_enableProtect": { "message": "Activar protección" },
+  "option_maxProtect": { "message": "Protección máxima" },
+  "desc_maxProtect": { "message": "Bloquea silenciosamente redirecciones y elementos web ocultos extra. (Algunos sitios pueden no funcionar correctamente)." },
+  "option_allSites": { "message": "Todos los sitios" },
+  "desc_allSites": { "message": "Aplica la protección en todos los sitios, ignorando la lista personalizada." },
+  "option_customList": { "message": "Lista de sitios personalizada:" },
+  "desc_customList": { "message": "Añade sitios donde la protección estará activada (Ignorado si la opción \"Todos los sitios\" está activa)." },
+  "txt_writeSite": { "message": "Introduce un sitio..." },
+  "btn_addSite": { "message": "Añadir" },
+  "btn_addCurrent": { "message": "Añadir este sitio" },
+  "msg_remove": { "message": "Quitar" },
+
+  "msg_warning": { "message": "¡Espera!" },
+  "msg_target": { "message": "Estás intentando ir a:" },
+  "msg_loading": { "message": "Cargando..." },
+  "btn_deny": { "message": "No, volver atrás" },
+  "btn_allow": { "message": "Sí, continuar" }
 }

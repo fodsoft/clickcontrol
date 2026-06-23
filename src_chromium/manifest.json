@@ -1,41 +1,41 @@
 {
 	"manifest_version": 3,
 	"name": "ClickControl\u2122",
-	"version": "1.0",
+	"version": "1.1",
 	"default_locale": "en",
-	"description": "__MSG_descripcion__",
+	"description": "__MSG_desc__",
 	"incognito": "split",
-	"permissions": 
-	[
+
+	"permissions": [
 		"storage",
 		"tabs",
-		"webNavigation"
+		"webNavigation",
+		"scripting",
+		"webRequest"
 	],
-	"host_permissions": 
-	[
+
+	"host_permissions": [
 		"<all_urls>"
 	],
-	"background": 
-	{
+
+	"background": {
 		"service_worker": "engine/guardian.js",
 		"type": "module"
 	},
-	"action": 
-	{
+
+	"action": {
 		"default_popup": "ui/menu.html",
-		"default_icon": 
-		{
-			"128": "img/icono.png"
+		"default_icon": {
+			"64": "img/icon.png"
 		}
 	},
-	"icons": 
-	{
-		"128": "img/icono.png"
+
+	"icons": {
+		"64": "img/icon.png"
 	},
-	"web_accessible_resources": 
-	[{
-		"resources": 
-		[
+
+	"web_accessible_resources": [{
+		"resources": [
 			"ui/*",
 			"img/*"
 		],

@@ -1,0 +1,5 @@
+src_chromium/LICENSE.txt
+src_firefox/LICENSE.txt
+
+src_chromium/*.zip
+src_firefox/*.zip

@@ -1,19 +1,12 @@
-# 🔓 ClickControl™ Safety Guide
-Any vulnerability found in ClickControl™  can be sent to ***support@fodsoft.com***.
+Vulnerabilities found in ClickControl should be reported privately via email to **contact@fodsoft.com**.
 
->[!CAUTION]
->Please do **NOT open a GitHub issue if you found a vulnerability**. Doing so would publicly disclose the vulnerability and could enable attackers to exploit it.
+Please do **not** open a GitHub issue to report a security vulnerability.
 
-## 📢 Guidelines
-Please follow these guidelines when reporting a vulnerability, if possible:
+## Guidelines
+When reporting a vulnerability, please adhere to the following guidelines where possible:
 
-- Check whether the vulnerability has already been resolved, as far as you can.
+- **Verify Status:** Check if the vulnerability has already been resolved in the latest release.
+- **Specify Version:** Indicate the exact version of ClickControl in which the issue was discovered.
+- **Document the Issue:** Provide detailed documentation, including replication steps or a proof of concept.
 
-- Specify the version of ClickControl™  in which it was discovered.
-
-- Provide proper documentation of the vulnerability.
-
-That's all. I will try to fix any reported vulnerability as soon as possible, as long as it is a real and serious issue. Please keep in mind that I am just one person, so it may take me a little time.
-
-**© 2026 FODSOFT™. Néo Foderé de Frutos. All rights reserved.**
-<!-- FODSOFT(TM). Neo Fodere de Frutos. All rights reserved. -->
+Confirmed security vulnerabilities will be addressed as a priority. Please note that ClickControl is managed by a solo maintainer; all reports are thoroughly reviewed, but individual email replies will not be sent. Thank you for your understanding and for helping keep the project secure.
