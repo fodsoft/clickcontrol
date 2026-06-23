@@ -1,5 +1,5 @@
 # ClickControl™
-![](https://img.shields.io/github/repo-size/fodsoft/clickcontrol?style=flat&color=brightgreen)
+![](https://img.shields.io/github/repo-size/fodsoft/clickcontrol?style=flat&color=lightgray)
 ![](https://img.shields.io/github/last-commit/fodsoft/clickcontrol?color=lightgray)
 ![](https://img.shields.io/badge/source-public-green)
 ![License](https://img.shields.io/badge/license-proprietary-red)
@@ -54,7 +54,7 @@ Please note that ClickControl is by no means intended to replace a traditional a
 
   - **[ZIP](https://resources.fodsoft.com/downloads/clickcontrol/releases/latest/clickcontrol-firefox)**
 
-*If you want to install it from a ZIP, in most Chromium-based browsers, you just need to go to `chrome://extensions/`, enable **Developer mode**, click on **Load unpacked**, and select the root folder where you extracted the ZIP. For Firefox, you must go to `about:config`, search for the `xpinstall.signatures.required` setting, and **change it from true to false**. To do this, you will need a version of Firefox such as **Developer Edition, Nightly, or ESR**.*
+*If you want to install it from a ZIP, in most Chromium-based browsers, you just need to go to `chrome://extensions`, enable **Developer mode**, click on **Load unpacked**, and select the root folder where you extracted the ZIP. For Firefox, you must go to `about:config`, search for the `xpinstall.signatures.required` setting, and **change it from true to false**. To do this, you will need a version of Firefox such as **Developer Edition, Nightly, or ESR**.*
 
 
 ## Screenshots
