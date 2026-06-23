@@ -1,7 +1,7 @@
 # ClickControl™
 ![](https://img.shields.io/github/repo-size/fodsoft/clickcontrol?style=flat&color=brightgreen)
-![](https://img.shields.io/github/last-commit/fodsoft/clickcontrol?color=blue)
-![](https://img.shields.io/badge/source-public-blue)
+![](https://img.shields.io/github/last-commit/fodsoft/clickcontrol?color=lightgray)
+![](https://img.shields.io/badge/source-public-green)
 ![License](https://img.shields.io/badge/license-proprietary-red)
 
 <br>
