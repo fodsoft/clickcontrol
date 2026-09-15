@@ -13,9 +13,7 @@ function load()
                     enable: res.enable ?? true,
                     maxProtect: res.maxProtect ?? false,
                     allSites: res.allSites ?? false,
-                    // Protects sites when "All sites" is OFF
                     sitesList: res.sitesList ?? [],
-                    // Exempts sites from protection when "All sites" is ON
                     exclusionList: res.exclusionList ?? []
                 };
                 resolve(cache);

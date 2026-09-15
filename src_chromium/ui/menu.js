@@ -17,11 +17,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const listTitle = document.getElementById('list-title');
     const listDesc = document.getElementById('list-desc');
 
-    // Both lists always exist; which one is shown/edited below depends on
-    // whether "All sites" is on. With it off, the custom list says which
-    // sites get protection. With it on, everything is protected already,
-    // so the same list slot switches to an exclusion list: sites added
-    // there are the ones exempted from that blanket protection.
     function activeKey() 
     {
         return cfg.allSites ? 'exclusionList' : 'sitesList';
@@ -84,9 +79,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     updateListLabels();
     renderList(activeList());
     applyLang();
-    // applyLang() only runs once here, but the list title/description were
-    // just set directly above (and are re-set on every toggle change), so
-    // they stay correct without needing a second applyLang() pass.
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const currentTab = tabs[0];
