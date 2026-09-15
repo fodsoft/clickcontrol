@@ -37,6 +37,9 @@ Please note that ClickControl is by no means intended to replace a traditional a
 - **Custom Sites List:**
   A dynamic and intuitive list where you can add the domains where the protection will be activated. For example, if you enter fodsoft.com into the list, any redirection attempt from fodsoft.com to another domain will be intercepted.
 
+- **Exclusion list:**
+  A list available exclusively when "All Sites" is enabled. It allows you to add domains that will be exempt from protection, ensuring smooth browsing on trusted sites while global protection remains active everywhere else.
+
 - **Add this site (domain):**
   Adds to the list the domain of the tab where the user is currently located when opening the menu.
 
