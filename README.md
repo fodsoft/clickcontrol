@@ -1,18 +1,18 @@
-# ClickControl™
+# ClickControl
 ![](https://img.shields.io/github/repo-size/fodsoft/clickcontrol?style=flat&color=lightgray)
 ![](https://img.shields.io/github/last-commit/fodsoft/clickcontrol?color=lightgray)
 ![](https://img.shields.io/badge/source-public-green)
-![License](https://img.shields.io/badge/license-proprietary-red)
+![](https://img.shields.io/badge/license-proprietary-red)
 
 <br>
 
 <div align="center">
-    <img src="https://resources.fodsoft.com/images/ext/logo_clickcontrol_a.png" width="512" alt="ClickControl logo">
+    <img src="https://resources.fodsoft.com/img/ext/clickcontrol-logo-horizontal.png" width="512" alt="ClickControl logo">
 </div>
 
 <br>
 
-ClickControl™ is a lightweight protection web extension against unwanted redirects, deceptive navigation tricks, and unsafe web behavior, developed by Néo Foderé de Frutos under the FODSOFT™ brand.
+ClickControl is a lightweight protection web extension against unwanted redirects, deceptive navigation tricks, and unsafe web behavior, developed by Néo Foderé de Frutos under the FODSOFT brand.
 
 It blocks forced tab openings, hidden click zones, malicious redirects, and other actions that try to move you away from the page without your consent. Lightweight, privacy‑friendly, and fully local, ClickControl ensures that every navigation is intentional and under your control.
 
@@ -56,20 +56,6 @@ Please note that ClickControl is by no means intended to replace a traditional a
 
 *If you want to install it from a ZIP, in most Chromium-based browsers, you just need to go to `chrome://extensions`, enable **Developer mode**, click on **Load unpacked**, and select the root folder where you extracted the ZIP. For Firefox, you must go to `about:config`, search for the `xpinstall.signatures.required` setting, and **change it from true to false**. To do this, you will need a version of Firefox such as **Developer Edition, Nightly, or ESR**.*
 
-
-## Screenshots
-<table border="0">
-  <tr>
-    <td align="center" valign="bottom">
-      <img src="https://resources.fodsoft.com/images/ext/clickcontrol_screenshot_menu.png" width="326" alt="ClickControl menu"><br>
-      <sub><b>Menu</b></sub>
-    </td>
-    <td align="center" valign="bottom">
-      <img src="https://resources.fodsoft.com/images/ext/clickcontrol_screenshot_popup.png" width="326" alt="ClickControl Pop-up"><br>
-      <sub><b>Pop-up</b></sub>
-    </td>
-  </tr>
-</table>
 
 <hr>
 

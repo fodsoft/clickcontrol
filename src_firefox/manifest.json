@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
-    "name": "ClickControl\u2122",
-    "version": "1.1",
+    "name": "ClickControl",
+    "version": "1.2",
     "default_locale": "en",
     "description": "__MSG_desc__",
 
@@ -10,7 +10,8 @@
         "tabs",
         "webNavigation",
         "scripting",
-        "webRequest"
+        "webRequest",
+        "alarms"
     ],
 
     "host_permissions": [
@@ -44,10 +45,13 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "clickcontrol@fodsoft.com",
-            "strict_min_version": "142.0",
+            "strict_min_version": "128.0",
             "data_collection_permissions": {
                 "required": [ "none" ]
             }
+        },
+        "gecko_android": {
+            "strict_min_version": "128.0"
         }
     }
 }

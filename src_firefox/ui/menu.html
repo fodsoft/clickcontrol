@@ -5,8 +5,9 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="./menu.css">
-        <title>ClickControl&trade;</title>
+        <title>ClickControl</title>
     </head>
 
     <body>
@@ -53,8 +54,8 @@
 
             <div class="option" style="align-items: start;">
                 <div>
-                    <span data-lang="option_customList"></span>
-                    <small data-lang="desc_customList"></small>
+                    <span id="list-title" data-lang="option_customList"></span>
+                    <small id="list-desc" data-lang="desc_customList"></small>
                 </div>
             </div>
 
@@ -66,7 +67,7 @@
 
             <button id="btn-add-current" style="display: none;"></button>
 
-            <ul id="site-list"></ul>
+            <ul id="site-list" class="site-list"></ul>
         </div>
 
         <div class="footer">
