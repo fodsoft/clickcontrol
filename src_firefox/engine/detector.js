@@ -44,4 +44,3 @@ export const Detector =
         return (false);
     }
 };
-// FODSOFT(TM). Neo Fodere de Frutos. All rights reserved.
