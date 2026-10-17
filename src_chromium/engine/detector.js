@@ -1,47 +1,47 @@
-// engine/detector.js - ClickControl(TM) v1.0
+// SPDX-FileCopyrightText: 2025-2026 FODSOFT. Neo Fodere de Frutos
+// SPDX-License-Identifier: LicenseRef-FODL-1.0
 
-import { UtilsUrl } from '../utils/url.js';
+import { urlUtils } from '../utils/url.js';
 
-export const Detector =
-{
-    debeInterceptar(urlSource, urlTarget, config) 
+export const Detector = {
+    check(src, target, cfg) 
     {
-        if (!config.enable || !urlSource || !urlTarget || urlSource === urlTarget || 
-			urlTarget.startsWith('chrome://') || urlTarget.startsWith('edge://') || urlTarget.startsWith('about:')) 
-				return (false);
+        if (!cfg.enable || !src || !target || src === target || 
+            target.startsWith('chrome://') || 
+            target.startsWith('edge://') || 
+            target.startsWith('about:'))
+                return false;
+
+        const real = urlUtils.unwrap(target) || target;
+        let isProtected = cfg.allSites;
+        let matchedRule = null;
         
-        let esSitioProtegido = config.allSites;
-        let reglaMatch = null;
-        
-        if (!esSitioProtegido && config.sitesList) 
+        if (!isProtected && cfg.sitesList) 
         {
-            for (const regla of config.sitesList) 
+            for (const rule of cfg.sitesList) 
             {
-                if (UtilsUrl.coincideProteccion(urlSource, regla))
+                if (urlUtils.isMatch(src, rule)) 
                 {
-                    esSitioProtegido = true;
-                    reglaMatch = regla;
+                    isProtected = true;
+                    matchedRule = rule;
                     break;
                 }
             }
         }
         
-        if (esSitioProtegido) 
+        if (isProtected) 
         {
-            let esDestinoInterno = false;
-            if (config.allSites)
-                esDestinoInterno = UtilsUrl.esMismoDominio(urlSource, urlTarget);
-            else if (reglaMatch)
-                esDestinoInterno = UtilsUrl.coincideProteccion(urlTarget, reglaMatch);
-            if (!esDestinoInterno) 
-            {
+            let isInternal = cfg.allSites 
+                ? urlUtils.isSame(src, real) 
+                : urlUtils.isMatch(real, matchedRule);
+
+            if (!isInternal)
                 return {
-                    interceptar: true,
-                    maxProtect: config.maxProtect
+                    intercept: true, 
+                    maxProtect: cfg.maxProtect, 
+                    realTarget: real 
                 };
-            }
         }
-        return (false);
+        return false;
     }
 };
-// FODSOFT(TM). Neo Fodere de Frutos. All rights reserved.

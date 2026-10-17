@@ -1,21 +1,42 @@
-// utils/config.js - ClickControl(TM) v1.0
+// SPDX-FileCopyrightText: 2025-2026 FODSOFT. Neo Fodere de Frutos
+// SPDX-License-Identifier: LicenseRef-FODL-1.0
 
-export const Config =
+let cache = null;
+
+function load() 
 {
-    async obtenerConfig()
+    return new Promise((resolve) => {
+        chrome.storage.local.get(['enable', 'maxProtect', 'allSites', 'sitesList'], (res) => {
+            cache = {
+                enable: res.enable ?? true,
+                maxProtect: res.maxProtect ?? false,
+                allSites: res.allSites ?? false,
+                sitesList: res.sitesList ?? []
+            };
+            resolve(cache);
+        });
+    });
+}
+
+chrome.storage.onChanged.addListener((changes, area) => {
+    if (area === 'local') 
+        cache = null;
+});
+
+export const Config = {
+    async get() 
     {
-        const data = await chrome.storage.local.get(['config']);
-        if (data.config) 
-            return (data.config);
-        const respuesta = await fetch(chrome.runtime.getURL('config/default.json'));
-        const configuracionPorDefecto = await respuesta.json();
-        await (this.guardarConfig(configuracionPorDefecto));
-        return (configuracionPorDefecto);
+        if (cache) 
+            return cache;
+        return load();
     },
-    
-    async guardarConfig(config) 
+    async set(cfg) 
     {
-        await (chrome.storage.local.set({ config: config }));
+        return new Promise((resolve) => {
+            chrome.storage.local.set(cfg, () => {
+                cache = null;
+                resolve();
+            });
+        });
     }
 };
-// FODSOFT(TM). Neo Fodere de Frutos. All rights reserved.

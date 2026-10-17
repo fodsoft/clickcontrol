@@ -1,17 +1,21 @@
 {
-  "descripcion": { "message": "Protection contre le clickjacking, les redirections malveillantes et les comportements web dangereux." },
-  "activar_proteccion": { "message": "Activer la protection" },
-  "proteccion_max": { "message": "Protection maximale" },
-  "desc_proteccion_max": { "message": "Bloque silencieusement les redirections et les éléments web cachés supplémentaires. (Certains sites peuvent ne pas fonctionner correctement)." },
-  "todos_sitios": { "message": "Tous les sites" },
-  "desc_todos_sitios": { "message": "Applique la protection sur tous les sites, en ignorant la liste personnalisée." },
-  "lista_custom": { "message": "Liste de sites personnalisée :" },
-  "desc_lista_custom": { "message": "Ajoute des sites où la protection sera activée (Ignoré si l’option \"Tous les sites\" est active)." },
-  "sitio_placeholder": { "message": "exemple.com" },
-  "btn_agregar": { "message": "Ajouter" },
-  "msg_espera": { "message": "Attends !" },
-  "msg_destino": { "message": "Essayes‑tu d’aller vers :" },
-  "cargando": { "message": "Chargement..." },
-  "btn_denegar": { "message": "Non, revenir" },
-  "btn_permitir": { "message": "Oui, continuer" }
+  "desc": { "message": "Protection contre le clickjacking, les redirections malveillantes et les comportements web dangereux." },
+  
+  "option_enableProtect": { "message": "Activer la protection" },
+  "option_maxProtect": { "message": "Protection maximale" },
+  "desc_maxProtect": { "message": "Bloque silencieusement les redirections et les éléments web cachés supplémentaires. (Certains sites peuvent ne pas fonctionner correctement)." },
+  "option_allSites": { "message": "Tous les sites" },
+  "desc_allSites": { "message": "Applique la protection sur tous les sites, en ignorant la liste personnalisée." },
+  "option_customList": { "message": "Liste de sites personnalisée :" },
+  "desc_customList": { "message": "Ajoute des sites où la protection sera activée (Ignoré si l’option \"Tous les sites\" est active)." },
+  "txt_writeSite": { "message": "Saisir un site..." },
+  "btn_addSite": { "message": "Ajouter" },
+  "btn_addCurrent": { "message": "Ajouter ce site" },
+  "msg_remove": { "message": "Quitter" },
+
+  "msg_warning": { "message": "Attends !" },
+  "msg_target": { "message": "Essayes-tu d’aller vers :" },
+  "msg_loading": { "message": "Chargement..." },
+  "btn_deny": { "message": "Non, revenir" },
+  "btn_allow": { "message": "Oui, continuer" }
 }

@@ -1,17 +1,21 @@
 {
-  "descripcion": { "message": "Protection against clickjacking, malicious redirects, and unsafe web behavior." },
-  "activar_proteccion": { "message": "Enable protection" },
-  "proteccion_max": { "message": "Max protection" },
-  "desc_proteccion_max": { "message": "Silently blocks redirects and extra hidden web elements. (Some sites may not work properly)." },
-  "todos_sitios": { "message": "All sites" },
-  "desc_todos_sitios": { "message": "Applies protection on all sites, ignoring the custom list." },
-  "lista_custom": { "message": "Custom sites list:" },
-  "desc_lista_custom": { "message": "Adds sites where protection will be enabled. (Ignored if the \"All Sites\" option is active)." },
-  "sitio_placeholder": { "message": "example.com" },
-  "btn_agregar": { "message": "Add" },
-  "msg_espera": { "message": "Hold on!" },
-  "msg_destino": { "message": "Are you trying to go to:" },
-  "cargando": { "message": "Loading..." },
-  "btn_denegar": { "message": "No, take me back" },
-  "btn_permitir": { "message": "Yes, continue" }
+  "desc": { "message": "Protection against clickjacking, malicious redirects, and unsafe web behavior." },
+
+  "option_enableProtect": { "message": "Enable protection" },
+  "option_maxProtect": { "message": "Max protection" },
+  "desc_maxProtect": { "message": "Silently blocks redirects and extra hidden web elements. (Some sites may not work properly)." },
+  "option_allSites": { "message": "All sites" },
+  "desc_allSites": { "message": "Applies protection on all sites, ignoring the custom list." },
+  "option_customList": { "message": "Custom sites list:" },
+  "desc_customList": { "message": "Adds sites where protection will be enabled. (Ignored if the \"All Sites\" option is active)." },
+  "txt_writeSite": { "message": "Enter a site..." },
+  "btn_addSite": { "message": "Add" },
+  "btn_addCurrent": { "message": "Add this site" },
+  "msg_remove": { "message": "Remove" },
+
+  "msg_warning": { "message": "Hold on!" },
+  "msg_target": { "message": "Are you trying to go to:" },
+  "msg_loading": { "message": "Loading..." },
+  "btn_deny": { "message": "No, take me back" },
+  "btn_allow": { "message": "Yes, continue" }
 }

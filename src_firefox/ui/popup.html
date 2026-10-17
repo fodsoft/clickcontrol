@@ -1,34 +1,34 @@
-<!-- ui/popup.html - ClickControl(TM) v1.0 -->
+<!-- SPDX-FileCopyrightText: 2025-2026 FODSOFT. Neo Fodere de Frutos -->
+<!-- SPDX-License-Identifier: LicenseRef-FODL-1.0 -->
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="popup.css">
-		<title>ClickControl&trade;</title>
-		<link rel="icon" type="image/png" href="../img/icono.png">
-	</head>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="./popup.css">
+        <title>ClickControl&trade;</title>
+        <link rel="icon" type="image/png" href="../img/icon.png">
+    </head>
 
-	<body>
-		<div class="popup">
-			<img src="../img/logo_clickcontrol_b.webp" 
-				 alt="ClickControl logo" 
-				 class="logo-clickcontrol"
-				 draggable="false" 
-				 onerror="this.style.display='none'">
+    <body>
+        <div class="popup">
+            <img src="../img/clickcontrol_logo_b.avif" 
+                alt="ClickControl logo" 
+                class="logo" 
+                draggable="false" 
+                onerror="this.style.display='none'">
 
-			<h1 data-lang="msg_espera"></h1>
-			<p data-lang="msg_destino"></p>
+            <h1 data-lang="msg_warning"></h1>
+            <p data-lang="msg_target"></p>
 
-			<div class="cuadro-url" id="url-target" data-lang="cargando"></div>
+            <div class="url-box" id="target-url" data-lang="msg_loading"></div>
 
-			<div class="buttons">
-				<button id="btn-no" class="btn btn-denegar" data-lang="btn_denegar"></button>
-				<button id="btn-si" class="btn btn-permitir" data-lang="btn_permitir"></button>
-			</div>
-		</div>
+            <div class="btn-group">
+                <button id="btn-deny" class="btn deny" data-lang="btn_deny"></button>
+                <button id="btn-allow" class="btn allow" data-lang="btn_allow"></button>
+            </div>
+        </div>
 
-		<script type="module" src="popup.js"></script>
-	</body>
+        <script type="module" src="popup.js"></script>
+    </body>
 </html>
-<!-- FODSOFT(TM). Neo Fodere de Frutos. All rights reserved. -->
