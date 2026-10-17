@@ -2,11 +2,6 @@
 // SPDX-License-Identifier: LicenseRef-FODL-1.0
 
 export const urlUtils = {
-    // Centralizes recognition of "not a real web page" URLs (browser UI,
-    // extension pages, data URIs, and view-source:) so every caller treats
-    // them the same way instead of each maintaining its own partial list.
-    // view-source: is included so opening a page's source (e.g. Ctrl+U) is
-    // never mistaken for a redirect attempt.
     isInternalUrl(url)
     {
         if (!url || typeof url !== 'string')
@@ -34,8 +29,6 @@ export const urlUtils = {
         if (raw.includes('.*'))
         {
             isWildcard = true;
-
-            // Native URL() crashes on asterisks; temporary subdomain bypasses this
             raw = raw.replace('.*', '.tempwildcard');
         }
 
@@ -94,7 +87,6 @@ export const urlUtils = {
         const last = parts[parts.length - 1];
         const secondToLast = parts[parts.length - 2];
 
-        // Supports multi-level ccTLDs (like .co.uk) to avoid clipping root domains
         if (last.length === 2 && (secondToLast.length === 2 || secondToLast.length === 3))
             return parts.slice(-3).join('.');
 

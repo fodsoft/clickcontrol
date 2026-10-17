@@ -11,15 +11,6 @@ const tabOrigins = new Map();
 const tabPendingRequest = new Map();
 const tabPendingSource = new Map();
 const tabPendingIsNewTab = new Map();
-
-// Serializes all navigation-related work per tab. Two navigations firing
-// back-to-back on the same tab (fast clicking, a page that redirects
-// again immediately, etc.) used to be handled by concurrent, overlapping
-// async calls; whichever one finished its awaits first could win and
-// overwrite the other's bookkeeping (tabOrigins and friends), which is
-// what let some redirect chains slip through unchecked. Routing every
-// handler through this queue guarantees they run in the same order the
-// events fired, one at a time, per tab.
 const tabQueues = new Map();
 
 function runExclusive(tabId, taskFn) 
@@ -308,12 +299,6 @@ chrome.webNavigation.onCommitted.addListener((details) => {
         else 
             await handleNav(details);
 
-        // The allow window only has to survive until the approved
-        // navigation actually commits (including any redirect chain that
-        // happened along the way while loading it). Clearing it right
-        // here - instead of on a blind timer - means a later, unrelated
-        // redirect on the same tab can no longer ride along on an old
-        // approval, which is what made the protection skippable before.
         if (wasAllowed) 
             tabAllowWindow.delete(details.tabId);
 
@@ -336,10 +321,6 @@ chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
     runExclusive(details.tabId, () => handleNav(details));
 });
 
-// Safety net: if an approved navigation never actually commits (network
-// error, cancelled, blocked by something else...), don't leave its allow
-// window open forever - that would silently wave through whatever this
-// tab navigates to next.
 chrome.webNavigation.onErrorOccurred.addListener((details) => {
     if (details.frameId !== 0) 
         return;
@@ -391,9 +372,6 @@ chrome.runtime.onMessage.addListener((req, sender, sendRes) => {
             } 
             catch (e) 
             {
-                // about:blank (unlike about:newtab) is guaranteed to be a
-                // safe, non-privileged navigation target extension code can
-                // always update a tab to - on desktop and on Android alike.
                 try { await chrome.tabs.update(req.tabId, { url: "about:blank" }); }
                 catch (e2) {}
             }
@@ -416,13 +394,6 @@ chrome.runtime.onMessage.addListener((req, sender, sendRes) => {
     }
 });
 
-// Keeps the background service worker warm on slower devices via a
-// recurring alarm, so it's less likely to have gone idle - and need a
-// slow cold-start - right when it needs to evaluate a navigation.
-// Manifest V3 has no literal "execution priority" flag to request; this,
-// together with registering every listener above synchronously at the
-// top level (required for Chrome to reliably wake the worker for these
-// events), is the practical equivalent available today.
 function armKeepAlive() 
 {
     try 
@@ -435,7 +406,6 @@ function armKeepAlive()
 if (chrome.alarms) 
 {
     chrome.alarms.onAlarm.addListener((alarm) => {
-        // No-op: simply receiving this alarm is what keeps the worker warm.
         if (alarm.name !== 'cc-keepalive') 
             return;
     });

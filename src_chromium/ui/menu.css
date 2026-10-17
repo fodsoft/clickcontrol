@@ -292,9 +292,6 @@ input:checked + .slider:before
     word-break: break-all;
 }
 
-/* When "All sites" is on, the same list slot becomes an exclusion list;
-   an amber accent (instead of the usual green) makes the mode switch
-   obvious at a glance. */
 .site-list--exclusion li 
 {
     border-left-color: rgba(230, 126, 34, 0.85);
@@ -349,11 +346,7 @@ input:checked + .slider:before
     color: #7f8c8d; 
 }
 
-/* Mobile browsers (e.g. Edge or Firefox for Android) can render this page
-   at a much wider, touch-driven viewport instead of a small desktop
-   dropdown. (max-width) covers narrow screens, (pointer: coarse) covers
-   touch input regardless of screen size. */
-@media (max-width: 480px), (pointer: coarse) 
+@media (pointer: coarse) 
 {
     body 
     {

@@ -16,8 +16,6 @@ export const Detector = {
 
         if (cfg.allSites) 
         {
-            // Everything is protected by default; sites in the exclusion
-            // list are the only ones exempted.
             isProtected = true;
 
             if (cfg.exclusionList) 

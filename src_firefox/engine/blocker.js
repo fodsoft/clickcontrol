@@ -7,9 +7,6 @@ export const Blocker = {
         if (isNewTab)
             chrome.tabs.remove(tabId).catch(() => {});
         else
-            // about:newtab isn't guaranteed to be a safe, scriptable
-            // navigation target on every Firefox build (notably Android);
-            // about:blank always is.
             chrome.tabs.update(tabId, { url: "about:blank" });
     },
     
@@ -42,7 +39,6 @@ export const Blocker = {
                 const style = window.getComputedStyle(el);
                 const rect = el.getBoundingClientRect();
 
-                // Clickjacking thresholds to block invisible overlays without breaking small UI popups
                 const isOverlay = (style.position === 'absolute' || 
                     style.position === 'fixed') &&  
                     (parseInt(style.zIndex, 10) > 500) && 

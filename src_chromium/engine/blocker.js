@@ -39,7 +39,6 @@ export const Blocker = {
                 const style = window.getComputedStyle(el);
                 const rect = el.getBoundingClientRect();
 
-                // Clickjacking thresholds to block invisible overlays without breaking small UI popups
                 const isOverlay = (style.position === 'absolute' || 
                     style.position === 'fixed') &&  
                     (parseInt(style.zIndex, 10) > 500) && 
