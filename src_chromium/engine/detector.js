@@ -7,16 +7,32 @@ export const Detector = {
     check(src, target, cfg) 
     {
         if (!cfg.enable || !src || !target || src === target || 
-            target.startsWith('chrome://') || 
-            target.startsWith('edge://') || 
-            target.startsWith('about:'))
+            urlUtils.isInternalUrl(src) || urlUtils.isInternalUrl(target))
                 return false;
 
         const real = urlUtils.unwrap(target) || target;
-        let isProtected = cfg.allSites;
+        let isProtected = false;
         let matchedRule = null;
-        
-        if (!isProtected && cfg.sitesList) 
+
+        if (cfg.allSites) 
+        {
+            // Everything is protected by default; sites in the exclusion
+            // list are the only ones exempted.
+            isProtected = true;
+
+            if (cfg.exclusionList) 
+            {
+                for (const rule of cfg.exclusionList) 
+                {
+                    if (urlUtils.isMatch(src, rule)) 
+                    {
+                        isProtected = false;
+                        break;
+                    }
+                }
+            }
+        } 
+        else if (cfg.sitesList) 
         {
             for (const rule of cfg.sitesList) 
             {

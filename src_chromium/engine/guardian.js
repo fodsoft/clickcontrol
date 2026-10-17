@@ -12,12 +12,33 @@ const tabPendingRequest = new Map();
 const tabPendingSource = new Map();
 const tabPendingIsNewTab = new Map();
 
+// Serializes all navigation-related work per tab. Two navigations firing
+// back-to-back on the same tab (fast clicking, a page that redirects
+// again immediately, etc.) used to be handled by concurrent, overlapping
+// async calls; whichever one finished its awaits first could win and
+// overwrite the other's bookkeeping (tabOrigins and friends), which is
+// what let some redirect chains slip through unchecked. Routing every
+// handler through this queue guarantees they run in the same order the
+// events fired, one at a time, per tab.
+const tabQueues = new Map();
+
+function runExclusive(tabId, taskFn) 
+{
+    const prevTask = tabQueues.get(tabId) || Promise.resolve();
+    const thisTask = prevTask.catch(() => {}).then(taskFn);
+
+    tabQueues.set(tabId, thisTask);
+    thisTask.catch(() => {}).finally(() => {
+        if (tabQueues.get(tabId) === thisTask) 
+            tabQueues.delete(tabId);
+    });
+    return thisTask;
+}
+
 function isInternalUrl(url) 
 {
     return (
-        !url ||
-        url.startsWith('chrome://') ||
-        url.startsWith('edge://') ||
+        urlUtils.isInternalUrl(url) ||
         url.startsWith(chrome.runtime.getURL(''))
     );
 }
@@ -25,7 +46,17 @@ function isInternalUrl(url)
 function evaluateProtection(src, cfg) 
 {
     if (cfg.allSites) 
+    {
+        if (cfg.exclusionList) 
+        {
+            for (const rule of cfg.exclusionList) 
+            {
+                if (urlUtils.isMatch(src, rule)) 
+                    return { isProtected: false, matchedRule: null };
+            }
+        }
         return { isProtected: true, matchedRule: null };
+    }
 
     if (cfg.sitesList) 
     {
@@ -86,10 +117,10 @@ async function handleNav(details)
             }
         }
 
-        if (src && !src.startsWith('chrome://') &&  !tabOrigins.has(details.tabId))
+        if (src && !isInternalUrl(src) && !tabOrigins.has(details.tabId))
             tabOrigins.set(details.tabId, src);
 
-        if (!src || src.startsWith('chrome://')) 
+        if (!src || isInternalUrl(src)) 
             return;
 
         tabPendingSource.set(details.tabId, src);
@@ -109,7 +140,7 @@ async function handleNav(details)
     catch (err) {}
 }
 
-function handleBeforeRedirect(details) 
+async function handleBeforeRedirect(details) 
 {
     if (details.tabId < 0) 
         return;
@@ -123,7 +154,9 @@ function handleBeforeRedirect(details)
     if (tabAllowWindow.has(tabId)) 
         return;
 
-    Config.get().then((cfg) => {
+    try 
+    {
+        const cfg = await Config.get();
         if (!cfg.enable) 
             return;
 
@@ -131,7 +164,7 @@ function handleBeforeRedirect(details)
             return;
 
         const src = tabOrigins.get(tabId);
-        if (!src || src.startsWith('chrome://')) 
+        if (!src || isInternalUrl(src)) 
             return; 
 
         const { isProtected, matchedRule } = evaluateProtection(src, cfg);
@@ -159,7 +192,8 @@ function handleBeforeRedirect(details)
             Blocker.block(tabId, isNewTab);
         else 
             Blocker.interceptBackend(tabId, redirectUrl, displayHost, backUrl, isNewTab);
-    }).catch(() => {});
+    } 
+    catch (e) {}
 }
 
 async function handleBackendRedirect(details) 
@@ -206,7 +240,7 @@ async function handleBackendRedirect(details)
             }
         }
 
-        if (!src || src.startsWith('chrome://')) 
+        if (!src || isInternalUrl(src)) 
         {
             tabOrigins.set(tabId, finalUrl);
             return;
@@ -252,39 +286,64 @@ chrome.webNavigation.onBeforeNavigate.addListener((details) => {
     const url = details.url;
     if (!isInternalUrl(url)) 
         tabPendingRequest.set(details.tabId, url);
-    handleNav(details);
+    runExclusive(details.tabId, () => handleNav(details));
 });
 
 chrome.webRequest.onBeforeRedirect.addListener(
-    handleBeforeRedirect,
+    (details) => runExclusive(details.tabId, () => handleBeforeRedirect(details)),
     { urls: ["<all_urls>"], types: ["main_frame"] }
 );
 
-chrome.webNavigation.onCommitted.addListener(async (details) => {
+chrome.webNavigation.onCommitted.addListener((details) => {
     if (details.frameId !== 0) 
         return;
 
-    const qualifiers = details.transitionQualifiers || [];
-    if (qualifiers.includes('server_redirect')) 
-        await handleBackendRedirect(details);
-    else 
-        await handleNav(details);
+    runExclusive(details.tabId, async () => {
+        const qualifiers = details.transitionQualifiers || [];
+        const wasAllowed = tabAllowWindow.has(details.tabId);
 
-    try 
-    {
-        const cfg = await Config.get();
-        if (cfg.enable && cfg.maxProtect) 
+        if (qualifiers.includes('server_redirect')) 
+            await handleBackendRedirect(details);
+        else 
+            await handleNav(details);
+
+        // The allow window only has to survive until the approved
+        // navigation actually commits (including any redirect chain that
+        // happened along the way while loading it). Clearing it right
+        // here - instead of on a blind timer - means a later, unrelated
+        // redirect on the same tab can no longer ride along on an old
+        // approval, which is what made the protection skippable before.
+        if (wasAllowed) 
+            tabAllowWindow.delete(details.tabId);
+
+        try 
         {
-            await chrome.scripting.executeScript
-            ({
-                target: { tabId: details.tabId },
-                func: Blocker.protectDOM
-            });
-        }
-    } catch (e) {}
+            const cfg = await Config.get();
+            if (cfg.enable && cfg.maxProtect && !isInternalUrl(details.url)) 
+            {
+                await chrome.scripting.executeScript
+                ({
+                    target: { tabId: details.tabId },
+                    func: Blocker.protectDOM
+                });
+            }
+        } catch (e) {}
+    });
 });
 
-chrome.webNavigation.onHistoryStateUpdated.addListener(handleNav);
+chrome.webNavigation.onHistoryStateUpdated.addListener((details) => {
+    runExclusive(details.tabId, () => handleNav(details));
+});
+
+// Safety net: if an approved navigation never actually commits (network
+// error, cancelled, blocked by something else...), don't leave its allow
+// window open forever - that would silently wave through whatever this
+// tab navigates to next.
+chrome.webNavigation.onErrorOccurred.addListener((details) => {
+    if (details.frameId !== 0) 
+        return;
+    tabAllowWindow.delete(details.tabId);
+});
 
 chrome.tabs.onRemoved.addListener((tabId) => {
     tabOrigins.delete(tabId);
@@ -292,37 +351,49 @@ chrome.tabs.onRemoved.addListener((tabId) => {
     tabPendingRequest.delete(tabId);
     tabPendingSource.delete(tabId);
     tabPendingIsNewTab.delete(tabId);
+    tabQueues.delete(tabId);
 });
 
 chrome.runtime.onMessage.addListener((req, sender, sendRes) => {
     if (req.action === "allow") 
     {
-        tabAllowWindow.add(req.tabId);
-
-        // Prevents infinite intercept loops during active tab updates
-        setTimeout(() => tabAllowWindow.delete(req.tabId), 2000);
-        tabOrigins.set(req.tabId, req.urlTarget);
-        chrome.tabs.update(req.tabId, { url: req.urlTarget });
+        runExclusive(req.tabId, async () => {
+            tabAllowWindow.add(req.tabId);
+            tabOrigins.set(req.tabId, req.urlTarget);
+            try { await chrome.tabs.update(req.tabId, { url: req.urlTarget }); }
+            catch (e) {}
+        });
         sendRes({ success: true });
     }
     else if (req.action === "deny") 
     {
-        tabAllowWindow.add(req.tabId);
-        setTimeout(() => tabAllowWindow.delete(req.tabId), 2000);
+        runExclusive(req.tabId, async () => {
+            tabAllowWindow.add(req.tabId);
 
-        if (req.isNewTab)
-        {
-            chrome.tabs.remove(req.tabId).catch(() => {});
-        }
-        else if (req.backUrl)
-            chrome.tabs.update(req.tabId, { url: req.backUrl });
-        else
-        {
-            chrome.tabs.goBack(req.tabId, () => {
-                if (chrome.runtime.lastError)
-                    chrome.tabs.update(req.tabId, { url: "chrome://newtab/" });
-            });
-        }
+            if (req.isNewTab)
+            {
+                try { await chrome.tabs.remove(req.tabId); }
+                catch (e) {}
+                return;
+            }
+
+            if (req.backUrl)
+            {
+                try { await chrome.tabs.update(req.tabId, { url: req.backUrl }); }
+                catch (e) {}
+                return;
+            }
+
+            try 
+            {
+                await chrome.tabs.goBack(req.tabId);
+            } 
+            catch (e) 
+            {
+                try { await chrome.tabs.update(req.tabId, { url: "chrome://newtab/" }); }
+                catch (e2) {}
+            }
+        });
         sendRes({ success: true });
     } 
     else if (req.action === "openTrustedLink")
@@ -330,13 +401,41 @@ chrome.runtime.onMessage.addListener((req, sender, sendRes) => {
         const TRUSTED_URL = "https://fodsoft.com/";
 
         chrome.tabs.create({ url: "about:blank" }, (tab) => {
-            tabAllowWindow.add(tab.id);
-            setTimeout(() => tabAllowWindow.delete(tab.id), 2000);
-
-            chrome.tabs.update(tab.id, { url: TRUSTED_URL }, () => {
-                sendRes({ success: true });
+            runExclusive(tab.id, async () => {
+                tabAllowWindow.add(tab.id);
+                try { await chrome.tabs.update(tab.id, { url: TRUSTED_URL }); }
+                catch (e) {}
             });
+            sendRes({ success: true });
         });
         return true;
     }
 });
+
+// Keeps the background service worker warm on slower devices via a
+// recurring alarm, so it's less likely to have gone idle - and need a
+// slow cold-start - right when it needs to evaluate a navigation.
+// Manifest V3 has no literal "execution priority" flag to request; this,
+// together with registering every listener above synchronously at the
+// top level (required for Chrome to reliably wake the worker for these
+// events), is the practical equivalent available today.
+function armKeepAlive() 
+{
+    try 
+    {
+        chrome.alarms.create('cc-keepalive', { periodInMinutes: 0.4 });
+    } 
+    catch (e) {}
+}
+
+if (chrome.alarms) 
+{
+    chrome.alarms.onAlarm.addListener((alarm) => {
+        // No-op: simply receiving this alarm is what keeps the worker warm.
+        if (alarm.name !== 'cc-keepalive') 
+            return;
+    });
+    chrome.runtime.onInstalled.addListener(armKeepAlive);
+    chrome.runtime.onStartup.addListener(armKeepAlive);
+    armKeepAlive();
+}

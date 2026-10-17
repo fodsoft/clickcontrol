@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
-	"name": "ClickControl\u2122",
-	"version": "1.1",
+	"name": "ClickControl",
+	"version": "1.2",
 	"default_locale": "en",
 	"description": "__MSG_desc__",
 	"incognito": "split",
@@ -11,7 +11,8 @@
 		"tabs",
 		"webNavigation",
 		"scripting",
-		"webRequest"
+		"webRequest",
+		"alarms"
 	],
 
 	"host_permissions": [

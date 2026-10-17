@@ -2,6 +2,27 @@
 // SPDX-License-Identifier: LicenseRef-FODL-1.0
 
 export const urlUtils = {
+    // Centralizes recognition of "not a real web page" URLs (browser UI,
+    // extension pages, data URIs, and view-source:) so every caller treats
+    // them the same way instead of each maintaining its own partial list.
+    // view-source: is included so opening a page's source (e.g. Ctrl+U) is
+    // never mistaken for a redirect attempt.
+    isInternalUrl(url)
+    {
+        if (!url || typeof url !== 'string')
+            return true;
+
+        return (
+            url.startsWith('chrome://') ||
+            url.startsWith('edge://') ||
+            url.startsWith('about:') ||
+            url.startsWith('view-source:') ||
+            url.startsWith('chrome-extension://') ||
+            url.startsWith('moz-extension://') ||
+            url.startsWith('data:')
+        );
+    },
+
     getDomain(urlStr)
     {
         if (!urlStr || typeof urlStr !== 'string')

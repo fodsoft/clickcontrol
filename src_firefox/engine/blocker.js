@@ -7,7 +7,10 @@ export const Blocker = {
         if (isNewTab)
             chrome.tabs.remove(tabId).catch(() => {});
         else
-            chrome.tabs.update(tabId, { url: "about:newtab" });
+            // about:newtab isn't guaranteed to be a safe, scriptable
+            // navigation target on every Firefox build (notably Android);
+            // about:blank always is.
+            chrome.tabs.update(tabId, { url: "about:blank" });
     },
     
     intercept(tabId, target, isNewTab = false) 

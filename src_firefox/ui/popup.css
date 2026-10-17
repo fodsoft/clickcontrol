@@ -266,7 +266,7 @@ p
     color: #0d3d21;
 }
 
-@media (max-height: 560px), (max-width: 380px) 
+@media (max-height: 560px), (max-width: 380px), (pointer: coarse) 
 {
     body
     {
@@ -312,6 +312,7 @@ p
     {
         padding: 10px 14px;
         font-size: 0.85em;
+        min-height: 44px;
     }
 }
 

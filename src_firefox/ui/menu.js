@@ -14,12 +14,79 @@ document.addEventListener('DOMContentLoaded', async () => {
     const btnAdd = document.getElementById('btn-add');
     const btnAddCurrent = document.getElementById('btn-add-current');
     const siteList = document.getElementById('site-list');
+    const listTitle = document.getElementById('list-title');
+    const listDesc = document.getElementById('list-desc');
+
+    // Both lists always exist; which one is shown/edited below depends on
+    // whether "All sites" is on. With it off, the custom list says which
+    // sites get protection. With it on, everything is protected already,
+    // so the same list slot switches to an exclusion list: sites added
+    // there are the ones exempted from that blanket protection.
+    function activeKey() 
+    {
+        return cfg.allSites ? 'exclusionList' : 'sitesList';
+    }
+
+    function activeList() 
+    {
+        return cfg[activeKey()];
+    }
+
+    function isCovered(list, domain) 
+    {
+        return list.some(rule => {
+            if (rule === domain) 
+                return true;
+            if (rule.endsWith('.*')) 
+            {
+                const base = rule.slice(0, -2);
+                return (domain === base || domain.startsWith(base + '.') 
+                    || domain.endsWith('.' + base));
+            }
+            return false;
+        });
+    }
+
+    function updateListLabels() 
+    {
+        const titleKey = cfg.allSites ? 'option_exclusionList' : 'option_customList';
+        const descKey = cfg.allSites ? 'desc_exclusionList' : 'desc_customList';
+
+        listTitle.setAttribute('data-lang', titleKey);
+        listDesc.setAttribute('data-lang', descKey);
+        listTitle.textContent = chrome.i18n.getMessage(titleKey);
+        listDesc.textContent = chrome.i18n.getMessage(descKey);
+
+        siteList.classList.toggle('site-list--exclusion', cfg.allSites);
+    }
+
+    let currentTabDomain = null;
+
+    function refreshAddCurrentButton() 
+    {
+        if (!currentTabDomain) 
+            return;
+
+        if (!isCovered(activeList(), currentTabDomain)) 
+        {
+            btnAddCurrent.style.display = 'block';
+            const ogTxt = chrome.i18n.getMessage("btn_addCurrent");
+            btnAddCurrent.textContent = `${ogTxt} (${currentTabDomain})`;
+            btnAddCurrent.onclick = () => addSite(currentTabDomain);
+        } 
+        else
+            btnAddCurrent.style.display = 'none';
+    }
 
     togEnable.checked = cfg.enable;
     togAll.checked = cfg.allSites;
     togMax.checked = cfg.maxProtect;
-    renderList(cfg.sitesList);
+    updateListLabels();
+    renderList(activeList());
     applyLang();
+    // applyLang() only runs once here, but the list title/description were
+    // just set directly above (and are re-set on every toggle change), so
+    // they stay correct without needing a second applyLang() pass.
 
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const currentTab = tabs[0];
@@ -33,26 +100,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             {
                 domain = urlUtils.getRootDomain(domain) || domain;
                 
-                const isAlreadyCovered = cfg.sitesList.some(rule => {
-                    if (rule === domain) 
-                        return true;
-
-                    if (rule.endsWith('.*')) {
-                        const base = rule.slice(0, -2);
-                        return (
-                            domain === base || domain.startsWith(base + '.') 
-                            || domain.endsWith('.' + base)
-                        );
-                    }
-                    return false;
-                });
-                
-                if (urlUtils.isValidDomain(domain) && !isAlreadyCovered) 
+                if (urlUtils.isValidDomain(domain)) 
                 {
-                    btnAddCurrent.style.display = 'block';
-                    const ogTxt = chrome.i18n.getMessage("btn_addCurrent");
-                    btnAddCurrent.textContent = `${ogTxt} (${domain})`;
-                    btnAddCurrent.onclick = () => addSite(domain);
+                    currentTabDomain = domain;
+                    refreshAddCurrentButton();
                 }
             }
         }
@@ -66,8 +117,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateCfg('maxProtect', togMax.checked);
     });
 
-    togAll.addEventListener('change', () => {
-        updateCfg('allSites', togAll.checked);
+    togAll.addEventListener('change', async () => {
+        await updateCfg('allSites', togAll.checked);
+        updateListLabels();
+        renderList(activeList());
+        refreshAddCurrentButton();
     });
 
     function addSite(site) 
@@ -75,27 +129,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!site) 
             return;
 
-        const isAlreadyCovered = cfg.sitesList.some(rule => {
-            if (rule === site) 
-                return true;
-            if (rule.endsWith('.*')) 
-            {
-                const base = rule.slice(0, -2);
-                return (site === base || site.startsWith(base + '.'));
-            }
-            return false;
-        });
+        const key = activeKey();
+        const list = cfg[key];
 
-        if (!isAlreadyCovered)
+        if (!isCovered(list, site))
         {
-            cfg.sitesList.push(site);
-            updateCfg('sitesList', cfg.sitesList);
-            renderList(cfg.sitesList);
+            list.push(site);
+            updateCfg(key, list);
+            renderList(list);
         }
         inpSite.value = '';
-        
-        if (btnAddCurrent.textContent.includes(site))
-            btnAddCurrent.style.display = 'none';
+        refreshAddCurrentButton();
     }
 
     function addSiteHandler() 
@@ -154,13 +198,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             const del = document.createElement('span');
             del.textContent = '✖';
             del.className = 'btn-del';
-            // del.title = '';
+            del.title = chrome.i18n.getMessage("msg_remove");
             del.setAttribute("data-lang-placeholder", "msg_remove");
             del.addEventListener('click', async () => 
             {
-                cfg.sitesList = cfg.sitesList.filter(item => item !== domain);
-                await updateCfg('sitesList', cfg.sitesList);
-                renderList(cfg.sitesList);
+                const key = activeKey();
+                cfg[key] = cfg[key].filter(item => item !== domain);
+                await updateCfg(key, cfg[key]);
+                renderList(cfg[key]);
+                refreshAddCurrentButton();
             });
             li.appendChild(del);
             siteList.appendChild(li);
