@@ -50,12 +50,12 @@ Please note that ClickControl is by no means intended to replace a traditional a
 
   - **[Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/clickcontrol%E2%84%A2/mbahcpomjmojgbnibgobknimgcojmjmf)**
 
-  - **[ZIP](https://resources.fodsoft.com/downloads/clickcontrol/releases/latest/clickcontrol-chromium)**
+  - **[ZIP](https://github.com/fodsoft/clickcontrol/releases/latest/)**
 
 ### For Firefox:
   - **[Firefox Add-ons](https://addons.mozilla.org/es-ES/firefox/addon/click-control/)**
 
-  - **[ZIP](https://resources.fodsoft.com/downloads/clickcontrol/releases/latest/clickcontrol-firefox)**
+  - **[ZIP](https://github.com/fodsoft/clickcontrol/releases/latest/)**
 
 *If you want to install it from a ZIP, in most Chromium-based browsers, you just need to go to `chrome://extensions`, enable **Developer mode**, click on **Load unpacked**, and select the root folder where you extracted the ZIP. For Firefox, you must go to `about:config`, search for the `xpinstall.signatures.required` setting, and **change it from true to false**. To do this, you will need a version of Firefox such as **Developer Edition, Nightly, or ESR**.*
 
