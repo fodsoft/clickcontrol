@@ -1,0 +1,34 @@
+<!-- ui/popup.html - ClickControl(TM) v1.0 -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="popup.css">
+		<title>ClickControl&trade;</title>
+		<link rel="icon" type="image/png" href="../img/icono.png">
+	</head>
+
+	<body>
+		<div class="popup">
+			<img src="../img/logo_clickcontrol_b.webp" 
+				 alt="ClickControl logo" 
+				 class="logo-clickcontrol"
+				 draggable="false" 
+				 onerror="this.style.display='none'">
+
+			<h1 data-lang="msg_espera"></h1>
+			<p data-lang="msg_destino"></p>
+
+			<div class="cuadro-url" id="url-target" data-lang="cargando"></div>
+
+			<div class="buttons">
+				<button id="btn-no" class="btn btn-denegar" data-lang="btn_denegar"></button>
+				<button id="btn-si" class="btn btn-permitir" data-lang="btn_permitir"></button>
+			</div>
+		</div>
+
+		<script type="module" src="popup.js"></script>
+	</body>
+</html>
+<!-- FODSOFT(TM). Neo Fodere de Frutos. All rights reserved. -->
